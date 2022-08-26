@@ -1,0 +1,11 @@
+bot_token.txt
+.idea
+.vscode
+.bloop
+.bsp
+.DS_Store
+.metals
+.idea
+target
+project
+
