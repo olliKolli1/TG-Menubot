@@ -1,18 +1,20 @@
 package s1.telegrambots
 
 import scala.concurrent.Future
-import scala.util.{Try, Using, Success, Failure}
+import scala.util.{Failure, Success, Try, Using}
 import scala.io.Source
-
 import com.bot4s.telegram.future.{Polling, TelegramBot}
-import com.bot4s.telegram.api.declarative.{Commands, Callbacks}
-import com.bot4s.telegram.api.RequestHandler
-import com.bot4s.telegram.clients.ScalajHttpClient
+import com.bot4s.telegram.api.declarative.{Callbacks, Commands}
+import com.bot4s.telegram.api.{RequestHandler, ChatActions}
 
-import com.bot4s.telegram.api.ChatActions
-import com.bot4s.telegram._
-import com.bot4s.telegram.methods.{SendMessage, GetMe, _}
-import com.bot4s.telegram.models.{InlineKeyboardButton, InlineKeyboardMarkup, InputFile, _}
+import com.bot4s.telegram.clients.ScalajHttpClient
+import com.bot4s.telegram.*
+import com.bot4s.telegram.methods.{GetMe, SendMessage, *}
+import com.bot4s.telegram.models.{InlineKeyboardButton, InlineKeyboardMarkup, InputFile, *}
+
+import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
+import javax.imageio.ImageIO
 
 /**
   * A wrapper class that wraps more complicated or advanced functionality such as loading images and making
@@ -208,8 +210,19 @@ class BasicBot extends TelegramBot with Polling with Commands[Future] with Callb
         request(SendPhoto(selectedChatId, photo))
     }
 
-  
+  /**
+    * Sends the given buffered image into the chat
+    * @param image Image that is to be sent
+    * @param selectedChatId Chat id where to send the image
+    */
+    def sendBufferedImage(image: BufferedImage, selectedChatId: ChatId): Unit = {
 
+        val imageOutputStream = new ByteArrayOutputStream()
+        ImageIO.write(image, "png", imageOutputStream)
+        val contents = com.bot4s.telegram.models.InputFile.Contents("image.png", imageOutputStream.toByteArray)
+
+        request(SendPhoto(selectedChatId, contents))
+    }
 
     /**
      * Extracts the first name (if any) of a user that sent a message.
