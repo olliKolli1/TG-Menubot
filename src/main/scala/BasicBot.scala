@@ -1,7 +1,8 @@
 package s1.telegrambots
 
 import scala.concurrent.Future
-
+import scala.util.{Try, Using, Success, Failure}
+import scala.io.Source
 
 import com.bot4s.telegram.future.{Polling, TelegramBot}
 import com.bot4s.telegram.api.declarative.{Commands, Callbacks}
@@ -25,10 +26,22 @@ class BasicBot extends TelegramBot with Polling with Commands[Future] with Callb
      * Reads the token file 
      */
     def token = {
-        val source = scala.io.Source.fromFile("bot_token.txt")  // Not try here - if bot token does not exist this should fail
-        val result = source.mkString.trim
-        source.close()
-        result
+
+        val result = Using(Source.fromFile("bot_token.txt")){
+            source => 
+                val s = source.getLines().mkString.trim
+                source.close()
+                s
+        }  // Not try here - if bot token does not exist this should fail
+        
+        result match
+            case Success(res) => 
+                res
+            case Failure(error) =>
+                Console.err.println("Error reading bot_token")
+                error.printStackTrace()
+
+                throw error
     }
     
     /**
