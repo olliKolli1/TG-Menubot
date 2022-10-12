@@ -1,4 +1,4 @@
-package s1.telegrambots.examples
+package s1.telegrambots.advanced
 
 import com.bot4s.telegram.models.{ChatId, Message}
 

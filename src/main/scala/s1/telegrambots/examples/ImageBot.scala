@@ -1,4 +1,4 @@
-package s1.telegrambots
+package s1.telegrambots.examples
 
 import s1.telegrambots.BasicBot
 import java.awt.image.BufferedImage
@@ -24,7 +24,7 @@ object ImageBot extends App:
         println(ms)
         if ms.contains(wordToFind) then
           val image    = BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB)
-          val graphics = image.getGraphics().asInstanceOf[java.awt.Graphics2D]
+          val graphics = image.getGraphics.asInstanceOf[java.awt.Graphics2D]
 
           graphics.setColor(java.awt.Color.RED)
           graphics.fillRect(10, 10, 200, 200)

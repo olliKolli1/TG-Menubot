@@ -1,4 +1,4 @@
-package s1.telegrambots
+package s1.telegrambots.advanced
 
 import scala.concurrent.Future
 
@@ -125,13 +125,6 @@ class AdvancedBot extends BasicBot:
     request(SendMessage(chatId, text, parseMode = Some(ParseMode.HTML)))
   }
 
-  /**
-   * Sends a photo into the chat
-   *
-   * @param filename Filename of the photo
-   * @param selectedChatId Chat id where to send the image
-   */
-  
   /**
     * A built-in kill switch system. Disable it if needed by overriding killSwitch
     */
