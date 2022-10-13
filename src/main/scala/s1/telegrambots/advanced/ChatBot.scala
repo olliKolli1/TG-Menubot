@@ -2,7 +2,7 @@ package s1.telegrambots.advanced
 
 import com.bot4s.telegram.models.{ChatId, Message}
 
-import s1.telegrambots.AdvancedBot
+import s1.telegrambots.advanced.AdvancedBot
 
 import scala.collection.mutable.{Buffer, Map}
 import scala.util.Random
@@ -37,7 +37,6 @@ object ChatBot extends App:
     def lastAction = {
       this.ourAction.getOrElse("started")
     }
-  
 
   /**
     * This class stores all discussions. Any discussion can be fetched with a message that holds a chat id.

@@ -1,4 +1,5 @@
 package s1.telegrambots.advanced
+import s1.telegrambots.BasicBot
 
 import scala.concurrent.Future
 
