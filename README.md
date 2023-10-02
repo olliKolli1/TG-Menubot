@@ -16,3 +16,8 @@ to run (insert these in terminal):
 ## Suunnitelma.
 
 Kirjoittakaa tähän suunnitelmanne botin toiminnalle.
+
+
+Lähettää stickereitä riippuen siitä, mitä käyttäjä on kirjoittanut/tehnyt
+
+Hakee kanttiinit.fi sivulta ruokalistan jollakin komennolla
