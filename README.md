@@ -20,4 +20,4 @@ Kirjoittakaa tähän suunnitelmanne botin toiminnalle.
 
 Lähettää stickereitä riippuen siitä, mitä käyttäjä on kirjoittanut/tehnyt
 
-Hakee kanttiinit.fi sivulta ruokalistan jollakin komennolla
+Hakee kanttiinit.fi sivulta ruokalistan jollakin komennolla (toistaiseksi tauolla)
