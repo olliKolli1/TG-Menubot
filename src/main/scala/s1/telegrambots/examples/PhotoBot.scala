@@ -8,7 +8,7 @@ import s1.telegrambots.BasicBot
 object PhotoBot extends App:
     object Bot extends BasicBot:
 
-      private val pic        = "kuva.png"
+      private val pic        = "1.png"
       private val wordToFind = "pepper"
 
       /**
