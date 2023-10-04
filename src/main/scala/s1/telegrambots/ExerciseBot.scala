@@ -1,5 +1,6 @@
 package s1.telegrambots
 import s1.telegrambots.BasicBot
+import s1.telegrambots.ExerciseBot.Bot
 
 
 object ExerciseBot extends App:
@@ -13,17 +14,16 @@ object ExerciseBot extends App:
              * TODO: Hae viestistä lähettäjän nimi ja tallenna se tähän
              * Vinkki
             */
-            val name: String = "_" 
+            val name: String = this.getUserFirstName(msg)
             
             //Funktio palauttaa Stringin, joka lähetetään vastauksena viestiin
             s"Message from $name was $len characters long"
 
 
-        
         /*
          *TODO: Luo tähän alle reagoijat eli tapahtumankuuntelijan, joka reagoi käyttäjän viestiin.
          */
-        ???
+        this.onUserMessageReply(viestinTiedot)
 
 
         this.run()
