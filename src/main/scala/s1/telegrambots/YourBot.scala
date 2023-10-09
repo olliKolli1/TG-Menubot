@@ -99,7 +99,7 @@ object YourBot extends App:
         def teksti(message: Message): String =
           "T-talo tai Kvarkki: 1, \nTäffä: 3, \nAlvari: 5, \nTuas: 7, \nDipoli: 45, \nKipsari väre: 50, \nStudio Kipsari: 51, \nA bLoc: 52, \nArvo: 59"
 
-        def convertDate(date: Seq[String], message: Message): String =
+        def convertDate(date: Seq[String]): String =
           val dateInRightFormat = date.slice(0, 4).mkString + "-" + date.slice(4, 6).mkString + "-" + date.slice(6, 8).mkString
           ruokalista(dateInRightFormat)
 
