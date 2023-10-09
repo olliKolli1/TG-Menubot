@@ -2,7 +2,7 @@ package s1.telegrambots
 import s1.telegrambots.BasicBot
 import scala.io.Source.fromURL
 import scala.util.Random
-import scala.collection.mutable.Map
+
 
 object YourBot extends App:
     object Bot extends BasicBot:
@@ -26,36 +26,129 @@ object YourBot extends App:
         //tapahtumankuuntelija ronaldoittamiselle, kutsutaan metodia, joka tarkistaa onko viestissä avainsanoja
         this.onUserMessage(doesMsgContainCR7)
 
-        def getJSON: Map[String, String]=
+        def getJSON: String =
           val date = "2023-10-04"
           val json = fromURL(s"https://kitchen.kanttiinit.fi/menus?lang=fi&restaurants=&days=${date}").mkString
-          println(json)
-          val jsonAsArray = json.split(":")
-          println(jsonAsArray)
-          var menuAsMap = Map[String, String]()
-          val desiredNumbersInTheJson = Vector[String]("{\"1\"", "\"3\"", "\"5\"", "\"7\"", "\"45\"", "\"50\"", "\"51\"", "\"52\"", "\"59\"")
-          for member <- jsonAsArray do
-            if desiredNumbersInTheJson.contains(member) then
-              val startingIndex = jsonAsArray.indexOf(member)
-              if member.contains("{") then
-                val newMember = member.drop(1)
-              var i = startingIndex + 3
-              var text = ""
-              while jsonAsArray(i) != date do
-                if !(jsonAsArray(i).contains("title")) && !(jsonAsArray(i).contains("]")) then
-                  var rightText = jsonAsArray(i)
-                  if jsonAsArray(i).contains("properties") then
-                    val splitted = jsonAsArray(i).split(",")
-                    rightText = splitted(0)
-                  text += (rightText + "\n")
-                i += 1
-              menuAsMap(member) = text
-              println(menuAsMap)
-          menuAsMap
+          val tTalo = "Tietotekniikantalo\n" + tTalonRuokalista(json)
+          val täffä = "Täffä\n" + täffänRuokalista(json)
+          val alvari = "Alvari\n" + alvarinRuokalista(json)
+          val tuas = "TUAS\n" + tuasinRuokalista(json)
+          val dipoli = "Dipoli Ravintolat\n" + dipolinRuokalista(json)
+          val kipsariVäre = "KipsariVäre\n" + kipsarinVäreenRuokalista(json)
+          val studioKipsari = "Studio Kipsari\n" + studioKipsarinRuokalista(json)
+          val aBloc = "A Bloc\n" + aBlocinRuokalista(json)
+          val arvo = "Arvo\n" + arvonRuokalista(json)
+          val kvarkki = "Kvarkki\n" + tTalonRuokalista(json)
 
-        def vastaus(s: Message) = getJSON("1")
 
-        this.onUserCommand("ruokalista", vastaus)
+
+        //T-talon ja kvarkin ruokalistat
+        def tTalonRuokalista(json: String): String =
+          val startIndex = json.lastIndexOfSlice("\"1\"")
+          val endIndex = json.indexOfSlice("}]}")
+          var sliced = json.slice( (startIndex + 19), endIndex)
+          sliced = sliced.replaceAll("\"title\"", "")
+          sliced = sliced.replaceAll("},", "\n")
+          sliced = sliced.replaceAll("\"", "")
+          sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
+          sliced = sliced.replaceAll("\\{:", "")
+          sliced
+
+        //Täffän ruokalista
+        def täffänRuokalista(json: String): String =
+          val startIndex = json.lastIndexOfSlice("\"3\"")
+          val endIndex = json.indexOfSlice("}]}", startIndex)
+          var sliced = json.slice( (startIndex + 19), endIndex)
+          sliced = sliced.replaceAll("\"title\"", "")
+          sliced = sliced.replaceAll("},", "\n")
+          sliced = sliced.replaceAll("\"", "")
+          sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
+          sliced = sliced.replaceAll("\\{:", "")
+          sliced
+
+        //Alvarin ruokalista
+        def alvarinRuokalista(json: String): String =
+          val startIndex = json.lastIndexOfSlice("\"5\"")
+          val endIndex = json.indexOfSlice("}]}", startIndex)
+          var sliced = json.slice( (startIndex + 19), endIndex)
+          sliced = sliced.replaceAll("\"title\"", "")
+          sliced = sliced.replaceAll("},", "\n")
+          sliced = sliced.replaceAll("\"", "")
+          sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
+          sliced = sliced.replaceAll("\\{:", "")
+          sliced
+
+        //Tuasin Ruokalista ruokalista
+        def tuasinRuokalista(json: String): String =
+          val startIndex = json.lastIndexOfSlice("\"7\"")
+          val endIndex = json.indexOfSlice("}]}", startIndex)
+          var sliced = json.slice( (startIndex + 19), endIndex)
+          sliced = sliced.replaceAll("\"title\"", "")
+          sliced = sliced.replaceAll("},", "\n")
+          sliced = sliced.replaceAll("\"", "")
+          sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
+          sliced = sliced.replaceAll("\\{:", "")
+          sliced
+
+        //Alvarin ruokalista
+        def dipolinRuokalista(json: String): String =
+          val startIndex = json.lastIndexOfSlice("\"45\"")
+          val endIndex = json.indexOfSlice("}]}", startIndex)
+          var sliced = json.slice( (startIndex + 19), endIndex)
+          sliced = sliced.replaceAll("\"title\"", "")
+          sliced = sliced.replaceAll("},", "\n")
+          sliced = sliced.replaceAll("\"", "")
+          sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
+          sliced = sliced.replaceAll("\\{:", "")
+          sliced
+
+        //Alvarin ruokalista
+        def kipsarinVäreenRuokalista(json: String): String =
+          val startIndex = json.lastIndexOfSlice("\"50\"")
+          val endIndex = json.indexOfSlice("}]}", startIndex)
+          var sliced = json.slice( (startIndex + 19), endIndex)
+          sliced = sliced.replaceAll("\"title\"", "")
+          sliced = sliced.replaceAll("},", "\n")
+          sliced = sliced.replaceAll("\"", "")
+          sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
+          sliced = sliced.replaceAll("\\{:", "")
+          sliced
+
+        //Alvarin ruokalista
+        def studioKipsarinRuokalista(json: String): String =
+          val startIndex = json.lastIndexOfSlice("\"51\"")
+          val endIndex = json.indexOfSlice("}]}", startIndex)
+          var sliced = json.slice( (startIndex + 19), endIndex)
+          sliced = sliced.replaceAll("\"title\"", "")
+          sliced = sliced.replaceAll("},", "\n")
+          sliced = sliced.replaceAll("\"", "")
+          sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
+          sliced = sliced.replaceAll("\\{:", "")
+          sliced
+
+        //Alvarin ruokalista
+        def aBlocinRuokalista(json: String): String =
+          val startIndex = json.lastIndexOfSlice("\"52\"")
+          val endIndex = json.indexOfSlice("}]}", startIndex)
+          var sliced = json.slice( (startIndex + 19), endIndex)
+          sliced = sliced.replaceAll("\"title\"", "")
+          sliced = sliced.replaceAll("},", "\n")
+          sliced = sliced.replaceAll("\"", "")
+          sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
+          sliced = sliced.replaceAll("\\{:", "")
+          sliced
+
+        //Alvarin ruokalista
+        def arvonRuokalista(json: String): String =
+          val startIndex = json.lastIndexOfSlice("\"59\"")
+          val endIndex = json.indexOfSlice("}]}", startIndex)
+          var sliced = json.slice( (startIndex + 19), endIndex)
+          sliced = sliced.replaceAll("\"title\"", "")
+          sliced = sliced.replaceAll("},", "\n")
+          sliced = sliced.replaceAll("\"", "")
+          sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
+          sliced = sliced.replaceAll("\\{:", "")
+          sliced
 
         this.run()
         // Tarkistetaan, että lähti käyntiin
