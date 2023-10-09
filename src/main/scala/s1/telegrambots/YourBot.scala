@@ -2,6 +2,7 @@ package s1.telegrambots
 import s1.telegrambots.BasicBot
 import scala.io.Source.fromURL
 import scala.util.Random
+import scala.collection.mutable.Map
 
 object YourBot extends App:
     object Bot extends BasicBot:
@@ -13,8 +14,7 @@ object YourBot extends App:
         //testataan sisältääkö lähetetty viesti jonkin avainsanoista, mikäli sisältää käytetään getRonaldoed metodia
         def doesMsgContainCR7(message: Message): Unit =
           val ms = getString(message).toLowerCase()
-          println(ms)
-          if this.words.contains(ms) then
+          if ms.contains(this.words(0)) || ms.contains(this.words(1)) || ms.contains(this.words(2)) || ms.contains(this.words(3)) then
             getRonaldoed(message)
 
         //metodi, joka lähettää ryhmään viestin "SIIUUU" ja hassunhauskan kuvan
@@ -25,6 +25,37 @@ object YourBot extends App:
 
         //tapahtumankuuntelija ronaldoittamiselle, kutsutaan metodia, joka tarkistaa onko viestissä avainsanoja
         this.onUserMessage(doesMsgContainCR7)
+
+        def getJSON: Map[String, String]=
+          val date = "2023-10-04"
+          val json = fromURL(s"https://kitchen.kanttiinit.fi/menus?lang=fi&restaurants=&days=${date}").mkString
+          println(json)
+          val jsonAsArray = json.split(":")
+          println(jsonAsArray)
+          var menuAsMap = Map[String, String]()
+          val desiredNumbersInTheJson = Vector[String]("{\"1\"", "\"3\"", "\"5\"", "\"7\"", "\"45\"", "\"50\"", "\"51\"", "\"52\"", "\"59\"")
+          for member <- jsonAsArray do
+            if desiredNumbersInTheJson.contains(member) then
+              val startingIndex = jsonAsArray.indexOf(member)
+              if member.contains("{") then
+                val newMember = member.drop(1)
+              var i = startingIndex + 3
+              var text = ""
+              while jsonAsArray(i) != date do
+                if !(jsonAsArray(i).contains("title")) && !(jsonAsArray(i).contains("]")) then
+                  var rightText = jsonAsArray(i)
+                  if jsonAsArray(i).contains("properties") then
+                    val splitted = jsonAsArray(i).split(",")
+                    rightText = splitted(0)
+                  text += (rightText + "\n")
+                i += 1
+              menuAsMap(member) = text
+              println(menuAsMap)
+          menuAsMap
+
+        def vastaus(s: Message) = getJSON("1")
+
+        this.onUserCommand("ruokalista", vastaus)
 
         this.run()
         // Tarkistetaan, että lähti käyntiin
