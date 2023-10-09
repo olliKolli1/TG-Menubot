@@ -26,6 +26,13 @@ object YourBot extends App:
         //tapahtumankuuntelija ronaldoittamiselle, kutsutaan metodia, joka tarkistaa onko viestissä avainsanoja
         this.onUserMessage(doesMsgContainCR7)
 
+        //tapahtumankuuntelija Help-komennolle ja toiminnallisuus alla
+        this.onUserCommand("help", help)
+
+        def help(message: Message): String =
+          "/ruokalista: Tiedot päivän ruokatarjonnasta \n Oikeilla avainsanoilla saa kuvia \"vuohesta\""
+
+
         def getJSON: Map[String, String]=
           val date = "2023-10-04"
           val json = fromURL(s"https://kitchen.kanttiinit.fi/menus?lang=fi&restaurants=&days=${date}").mkString
