@@ -160,7 +160,7 @@ object YourBot extends App:
             nimi = "** Tuas **"
           nimi + "\n" + sliced
 
-        //Alvarin ruokalista
+        //Dipolin ruokalista
         def dipolinRuokalista(json: String): String =
           val startIndex = json.lastIndexOfSlice("\"45\"")
           val endIndex = json.indexOfSlice("}]}", startIndex)
@@ -175,7 +175,7 @@ object YourBot extends App:
             nimi = "** Dipoli **"
           nimi + "\n" + sliced
 
-        //Alvarin ruokalista
+        //Kipsari Väreen ruokalista
         def kipsarinVäreenRuokalista(json: String): String =
           val startIndex = json.lastIndexOfSlice("\"50\"")
           val endIndex = json.indexOfSlice("}]}", startIndex)
@@ -190,7 +190,7 @@ object YourBot extends App:
             nimi = "** Kipsari Väre **"
           nimi + "\n" + sliced
 
-        //Alvarin ruokalista
+        //Studio Kipsarin ruokalista
         def studioKipsarinRuokalista(json: String): String =
           val startIndex = json.lastIndexOfSlice("\"51\"")
           val endIndex = json.indexOfSlice("}]}", startIndex)
@@ -205,7 +205,7 @@ object YourBot extends App:
             nimi = "** Studio Kipsari **"
           nimi + "\n" + sliced
 
-        //Alvarin ruokalista
+        //A Blocin ruokalista
         def aBlocinRuokalista(json: String): String =
           val startIndex = json.lastIndexOfSlice("\"52\"")
           val endIndex = json.indexOfSlice("}]}", startIndex)
@@ -220,7 +220,7 @@ object YourBot extends App:
             nimi = "** A Bloc **"
           nimi + "\n" + sliced
 
-        //Alvarin ruokalista
+        //Arvon ruokalista
         def arvonRuokalista(json: String): String =
           val startIndex = json.lastIndexOfSlice("\"59\"")
           val endIndex = json.indexOfSlice("}]}", startIndex)
