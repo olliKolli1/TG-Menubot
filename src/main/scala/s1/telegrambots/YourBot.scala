@@ -54,9 +54,9 @@ object YourBot extends App:
         def lempiravintola(message: Message): String =
           var id = ""
           this.fave match
-            case None => id = "ei ole"
+            case None => id = "0"
             case Some(value) => id = value
-          var palautus = "Et ole asettanut lempparia :("
+          var palautus = ""
           if id.toInt == 1 then
             palautus = "T-talo ja Kvarkki (1)"
           else if id.toInt == 2 then
@@ -74,7 +74,9 @@ object YourBot extends App:
           else if id.toInt == 8 then
             palautus = "A Bloc (8)"
           else if id.toInt == 9 then
-            palautus = "Arvc (9)"
+            palautus = "Arvo (9)"
+          else if id.toInt == 0 then
+            palautus = "Et ole asettanut lempiravintolaa :("
           palautus
 
         //tällä saa listan ravintoloiden id:istä
