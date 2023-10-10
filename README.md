@@ -20,4 +20,8 @@ Kirjoittakaa tähän suunnitelmanne botin toiminnalle.
 
 Lähettää stickereitä riippuen siitä, mitä käyttäjä on kirjoittanut/tehnyt
 
-Hakee kanttiinit.fi sivulta ruokalistan jollakin komennolla (toistaiseksi tauolla)
+Hakee kanttiinit.fi sivulta ruokalistan jollakin komennolla
+
+Käyttäjä voi valita lempiravintolan, joka korostetaan ruokalistatulosteessa
+
+Toteutetaan help-komento, joka kertoo botin kaiken toiminnallisuuden
