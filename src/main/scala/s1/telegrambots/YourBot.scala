@@ -9,7 +9,7 @@ object YourBot extends App:
 
         //Ronaldoittamiseen käytetyt kuvat ja aputekstin pätkät
         private val pics: Vector[String] = Vector("kuvat/1.png", "kuvat/19.png", "kuvat/40.png", "kuvat/46.png", "kuvat/92.png", "kuvat/104.png", "kuvat/105.png")
-        private val words: Vector[String] = Vector("ronaldo", "cr7", "cristiano ronaldo", "penaldo")
+        private val words: Vector[String] = Vector("ronaldo", "cr7", "cristiano ronaldo", "penaldo", "rolle")
 
         //testataan sisältääkö lähetetty viesti jonkin avainsanoista, mikäli sisältää käytetään getRonaldoed metodia
         def doesMsgContainCR7(message: Message): Unit =
@@ -31,90 +31,71 @@ object YourBot extends App:
         this.onUserCommand("help", help)
 
         def help(message: Message): String =
-          "/ruokalista[päivämäärä (muodossa: vvvvkkpp)]: Tiedot päivän ruokatarjonnasta \n" +
-          "/ravintolat: Opiskelijaravintolat ja niiden ID:t \n" +
-          "/lempiravintola[ravintolan ID] muuttaa lempiravintolaasi antamasi ID:n mukaisesti \n" +
-          "Oikeilla avainsanoilla saa kuvia \"vuohesta\""
+          "/ruokalista [päivämäärä (muodossa: vvvv-kk-pp)]: Tiedot päivän ruokatarjonnasta \n/ravintolat: Opiskelijaravintolat ja niiden ID:t \n/lempiravintola [ravintolan ID]: muuttaa lempiravintolaasi antamasi ID:n mukaisesti \n/lemppari: palauttaa lemppariravintolasi\nOikeilla avainsanoilla saa kuvia \"vuohesta\""
 
 
-        //näillä voi muuttaa lempiravintolaa
+        //lempiravintolan muuttuja
         private var fave: Option[String] = None
 
-        this.onUserCommand("lempiravintola1", to1)
-        def to1(message: Message): String =
-          this.fave = Some("1")
-          "Suosikkia muutettu."
+        //tapahtumankuuntelija ja toteutus lempiravintolan muuttamiselle
+        this.onUserCommandWithArguments("lempiravintola", muutaRavintolaa)
 
-        this.onUserCommand("lempiravintola3", to3)
-        def to3(message: Message): String =
-          this.fave = Some("3")
-          "Suosikkia muutettu."
+        def muutaRavintolaa(index: Seq[String]): String =
+          val indexAsString = index.mkString
+          if indexAsString.toInt > 9 || indexAsString.toInt < 1 then
+            "Väärä Indeksi !!!!!"
+          else
+            this.fave = Some(indexAsString)
+            "Lemppari muutettu :)"
 
-        this.onUserCommand("lempiravintola5", to5)
-        def to5(message: Message): String =
-          this.fave = Some("5")
-          "Suosikkia muutettu."
+        //lemppari komennon tapahtumankuuntelija ja toteutus
+        this.onUserCommand("lemppari", lempiravintola)
 
-        this.onUserCommand("lempiravintola7", to7)
-        def to7(message: Message): String =
-          this.fave = Some("7")
-          "Suosikkia muutettu."
-
-        this.onUserCommand("lempiravintola45", to45)
-        def to45(message: Message): String =
-          this.fave = Some("45")
-          "Suosikkia muutettu."
-
-        this.onUserCommand("lempiravintola50", to50)
-        def to50(message: Message): String =
-          this.fave = Some("50")
-          "Suosikkia muutettu."
-
-        this.onUserCommand("lempiravintola51", to51)
-        def to51(message: Message): String =
-          this.fave = Some("51")
-          "Suosikkia muutettu."
-
-        this.onUserCommand("lempiravintola52", to52)
-        def to52(message: Message): String =
-          this.fave = Some("52")
-          "Suosikkia muutettu."
-
-        this.onUserCommand("lempiravintola59", to59)
-        def to59(message: Message): String =
-          this.fave = Some("59")
-          "Suosikkia muutettu."
-
-        //"tarpeettomat" testausmetodit
-        this.onUserCommand("fave", favo)
-
-        def favo(message: Message): String =
+        def lempiravintola(message: Message): String =
+          var id = ""
           this.fave match
-            case None => "ei ole"
-            case Some(value) => value
+            case None => id = "ei ole"
+            case Some(value) => id = value
+          var palautus = "Et ole asettanut lempparia :("
+          if id.toInt == 1 then
+            palautus = "T-talo ja Kvarkki (1)"
+          else if id.toInt == 2 then
+            palautus = "Täffä (2)"
+          else if id.toInt == 3 then
+            palautus = "Alvari (3)"
+          else if id.toInt == 4 then
+            palautus = "Tuas (4)"
+          else if id.toInt == 5 then
+            palautus = "Dipoli (5)"
+          else if id.toInt == 6 then
+            palautus = "Kipsari Väre (6)"
+          else if id.toInt == 7 then
+            palautus = "Studio Kipsari (7)"
+          else if id.toInt == 8 then
+            palautus = "A Bloc (8)"
+          else if id.toInt == 9 then
+            palautus = "Arvc (9)"
+          palautus
 
         //tällä saa listan ravintoloiden id:istä
         this.onUserCommand("ravintolat", teksti)
 
         def teksti(message: Message): String =
-          "T-talo tai Kvarkki: 1, \nTäffä: 3, \nAlvari: 5, \nTuas: 7, \nDipoli: 45, \nKipsari väre: 50, \nStudio Kipsari: 51, \nA bLoc: 52, \nArvo: 59"
-
-        def convertDate(date: Seq[String], message: Message): String =
-          val dateInRightFormat = date.slice(0, 4).mkString + "-" + date.slice(4, 6).mkString + "-" + date.slice(6, 8).mkString
-          ruokalista(dateInRightFormat)
+          "T-talo ja Kvarkki: 1, \nTäffä: 2, \nAlvari: 3, \nTuas: 4, \nDipoli: 5, \nKipsari väre: 6, \nStudio Kipsari: 7, \nA BLoc: 8, \nArvo: 9"
 
         //ruokalistan hakumetodi
-        def ruokalista(date: String): String =
-          val json = fromURL(s"https://kitchen.kanttiinit.fi/menus?lang=fi&restaurants=&days=${date}").mkString
-          val tTalo = "Tietotekniikantalo ja Kvarkki\n" + tTalonRuokalista(json)
-          val täffä = "Täffä\n" + täffänRuokalista(json)
-          val alvari = "Alvari\n" + alvarinRuokalista(json)
-          val tuas = "TUAS\n" + tuasinRuokalista(json)
-          val dipoli = "Dipoli Ravintolat\n" + dipolinRuokalista(json)
-          val kipsariVäre = "KipsariVäre\n" + kipsarinVäreenRuokalista(json)
-          val studioKipsari = "Studio Kipsari\n" + studioKipsarinRuokalista(json)
-          val aBloc = "A Bloc\n" + aBlocinRuokalista(json)
-          val arvo = "Arvo\n" + arvonRuokalista(json)
+        def ruokalista(date: Seq[String]): String =
+          val dateAsString = date.mkString
+          val json = fromURL(s"https://kitchen.kanttiinit.fi/menus?lang=fi&restaurants=&days=${dateAsString}").mkString
+          val tTalo = tTalonRuokalista(json)
+          val täffä = täffänRuokalista(json)
+          val alvari = alvarinRuokalista(json)
+          val tuas = tuasinRuokalista(json)
+          val dipoli = dipolinRuokalista(json)
+          val kipsariVäre = kipsarinVäreenRuokalista(json)
+          val studioKipsari = studioKipsarinRuokalista(json)
+          val aBloc = aBlocinRuokalista(json)
+          val arvo = arvonRuokalista(json)
           s"Ruokalistat:\n$tTalo\n\n$täffä\n\n$alvari\n\n$tuas\n\n$dipoli\n\n$kipsariVäre\n\n$studioKipsari\n\n$aBloc\n\n$arvo"
 
         //T-talon ja kvarkin ruokalistat
@@ -127,7 +108,10 @@ object YourBot extends App:
           sliced = sliced.replaceAll("\"", "")
           sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
           sliced = sliced.replaceAll("\\{:", "")
-          sliced
+          var nimi = "Tietotekniikantalo ja Kvarkki"
+          if this.fave.getOrElse("0") == "1" then
+            nimi = "** Tietotekniikantalo ja Kvarkki **"
+          nimi + "\n" + sliced
 
         //Täffän ruokalista
         def täffänRuokalista(json: String): String =
@@ -139,7 +123,10 @@ object YourBot extends App:
           sliced = sliced.replaceAll("\"", "")
           sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
           sliced = sliced.replaceAll("\\{:", "")
-          sliced
+          var nimi = "Täffä"
+          if this.fave.getOrElse("0") == "2" then
+            nimi = "** Täffä **"
+          nimi + "\n" + sliced
 
         //Alvarin ruokalista
         def alvarinRuokalista(json: String): String =
@@ -151,7 +138,10 @@ object YourBot extends App:
           sliced = sliced.replaceAll("\"", "")
           sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
           sliced = sliced.replaceAll("\\{:", "")
-          sliced
+          var nimi = "Alvari"
+          if this.fave.getOrElse("0") == "3" then
+            nimi = "** Alvari **"
+          nimi + "\n" + sliced
 
         //Tuasin Ruokalista ruokalista
         def tuasinRuokalista(json: String): String =
@@ -163,7 +153,10 @@ object YourBot extends App:
           sliced = sliced.replaceAll("\"", "")
           sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
           sliced = sliced.replaceAll("\\{:", "")
-          sliced
+          var nimi = "Tuas"
+          if this.fave.getOrElse("0") == "4" then
+            nimi = "** Tuas **"
+          nimi + "\n" + sliced
 
         //Alvarin ruokalista
         def dipolinRuokalista(json: String): String =
@@ -175,7 +168,10 @@ object YourBot extends App:
           sliced = sliced.replaceAll("\"", "")
           sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
           sliced = sliced.replaceAll("\\{:", "")
-          sliced
+          var nimi = "Dipoli"
+          if this.fave.getOrElse("0") == "5" then
+            nimi = "** Dipoli **"
+          nimi + "\n" + sliced
 
         //Alvarin ruokalista
         def kipsarinVäreenRuokalista(json: String): String =
@@ -187,7 +183,10 @@ object YourBot extends App:
           sliced = sliced.replaceAll("\"", "")
           sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
           sliced = sliced.replaceAll("\\{:", "")
-          sliced
+          var nimi = "Kipsari Väre"
+          if this.fave.getOrElse("0") == "6" then
+            nimi = "** Kipsari Väre **"
+          nimi + "\n" + sliced
 
         //Alvarin ruokalista
         def studioKipsarinRuokalista(json: String): String =
@@ -199,7 +198,10 @@ object YourBot extends App:
           sliced = sliced.replaceAll("\"", "")
           sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
           sliced = sliced.replaceAll("\\{:", "")
-          sliced
+          var nimi = "Studio Kipsari"
+          if this.fave.getOrElse("0") == "7" then
+            nimi = "** Studio Kipsari **"
+          nimi + "\n" + sliced
 
         //Alvarin ruokalista
         def aBlocinRuokalista(json: String): String =
@@ -211,7 +213,10 @@ object YourBot extends App:
           sliced = sliced.replaceAll("\"", "")
           sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
           sliced = sliced.replaceAll("\\{:", "")
-          sliced
+          var nimi = "A Bloc"
+          if this.fave.getOrElse("0") == "8" then
+            nimi = "** A Bloc **"
+          nimi + "\n" + sliced
 
         //Alvarin ruokalista
         def arvonRuokalista(json: String): String =
@@ -223,10 +228,13 @@ object YourBot extends App:
           sliced = sliced.replaceAll("\"", "")
           sliced = sliced.replaceAll("properties:", " allergeenitiedot: ")
           sliced = sliced.replaceAll("\\{:", "")
-          sliced
+          var nimi = "Arvo"
+          if this.fave.getOrElse(0) == "9" then
+            nimi = "** Arvo **"
+          nimi + "\n" + sliced
 
         //tapahtumankuuntelija ruokalistoille
-        this.onUserCommandWithArguments("ruokalista", convertDate)
+        this.onUserCommandWithArguments("ruokalista", ruokalista)
 
         this.run()
         // Tarkistetaan, että lähti käyntiin
@@ -239,16 +247,3 @@ end YourBot
 
 
 
-
-
-//private var lemppari: Option[String] = None
-//
-//        this.onUserCommand("lempiravintola", kysy)
-//
-//        def kysy(message: Message): String =
-//          this.lisaaLemppari
-//
-//          "Lista ravintoloista, valitse 1 ja kirjoita id:\nKvarkki tai T-talo: 1, \nTäffä: 3, \nAlvari: 5, \nTuas: 7, \nDipoli: 45, \nKipsari väre: 50, \nStudio Kipsari: 51, \nA Bloc: 52"
-//
-//        def lisaaLemppari =
-//          this.onUserMessageReply(metodi(String))
