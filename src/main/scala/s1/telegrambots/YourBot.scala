@@ -14,7 +14,7 @@ object YourBot extends App:
         //testataan sisältääkö lähetetty viesti jonkin avainsanoista, mikäli sisältää käytetään getRonaldoed metodia
         def doesMsgContainCR7(message: Message): Unit =
           val ms = getString(message).toLowerCase()
-          if ms.contains(this.words(0)) || ms.contains(this.words(1)) || ms.contains(this.words(2)) || ms.contains(this.words(3)) then
+          if ms.contains(this.words(0)) || ms.contains(this.words(1)) || ms.contains(this.words(2)) || ms.contains(this.words(3)) || ms.contains(this.words(4)) then
             getRonaldoed(message)
 
         //metodi, joka lähettää ryhmään viestin "SIIUUU" ja hassunhauskan kuvan
