@@ -1,37 +1,15 @@
 package s1.telegrambots
 import s1.telegrambots.BasicBot
 import scala.io.Source.fromURL
-import scala.util.Random
 
 
 object YourBot extends App:
     object Bot extends BasicBot:
 
-        //Ronaldoittamiseen käytetyt kuvat ja aputekstin pätkät
-        private val pics: Vector[String] = Vector("kuvat/1.png", "kuvat/19.png", "kuvat/40.png", "kuvat/46.png", "kuvat/92.png", "kuvat/104.png", "kuvat/105.png")
-        private val words: Vector[String] = Vector("ronaldo", "cr7", "cristiano ronaldo", "penaldo", "rolle")
-
-        //testataan sisältääkö lähetetty viesti jonkin avainsanoista, mikäli sisältää käytetään getRonaldoed metodia
-        def doesMsgContainCR7(message: Message): Unit =
-          val ms = getString(message).toLowerCase()
-          if ms.contains(this.words(0)) || ms.contains(this.words(1)) || ms.contains(this.words(2)) || ms.contains(this.words(3)) || ms.contains(this.words(4)) then
-            getRonaldoed(message)
-
-        //metodi, joka lähettää ryhmään viestin "SIIUUU" ja hassunhauskan kuvan
-        def getRonaldoed(message: Message) =
-          val id = getChatId(message)
-          sendPhoto(pics(Random.between(0,6)), id)
-          writeMessage("SIIUUU", id)
-
-        //tapahtumankuuntelija ronaldoittamiselle, kutsutaan metodia, joka tarkistaa onko viestissä avainsanoja
-        this.onUserMessage(doesMsgContainCR7)
-
-
         //tapahtumankuuntelija Help-komennolle ja toiminnallisuus alla
         this.onUserCommand("help", help)
-
         def help(message: Message): String =
-          "/ruokalista [päivämäärä (muodossa: vvvv-kk-pp)]: Tiedot päivän ruokatarjonnasta \n/ravintolat: Opiskelijaravintolat ja niiden ID:t \n/lempiravintola [ravintolan ID]: muuttaa lempiravintolaasi antamasi ID:n mukaisesti \n/lemppari: palauttaa lemppariravintolasi\nOikeilla avainsanoilla saa kuvia \"vuohesta\""
+          "/ruokalista [päivämäärä (muodossa: vvvv-kk-pp)]: Tiedot päivän ruokatarjonnasta \n/ravintolat: Opiskelijaravintolat ja niiden ID:t \n/lempiravintola [ravintolan ID]: muuttaa lempiravintolaasi antamasi ID:n mukaisesti \n/lemppari: palauttaa lemppariravintolasi\n/täffä [pvm]: täffän ruokalista\n/tietotalo [pvm]: T-talon ja kvarkin ruokalista\n/tuas [pvm]: Tuasin ruokalista\n/alvari [pvm]: alvarin ruokalista\n/abloc [pvm]: A blocin ruokalista\n/dipoli [pvm]: Dipolin ruokalista"
 
 
         //lempiravintolan muuttuja
@@ -85,10 +63,14 @@ object YourBot extends App:
         def teksti(message: Message): String =
           "T-talo ja Kvarkki: 1, \nTäffä: 2, \nAlvari: 3, \nTuas: 4, \nDipoli: 5, \nKipsari väre: 6, \nStudio Kipsari: 7, \nA BLoc: 8, \nArvo: 9"
 
+        def getJson(date: String): String =
+          val json = fromURL(s"https://kitchen.kanttiinit.fi/menus?lang=fi&restaurants=&days=${date}").mkString
+          json
+
         //ruokalistan hakumetodi
         def ruokalista(date: Seq[String]): String =
           val dateAsString = date.mkString
-          val json = fromURL(s"https://kitchen.kanttiinit.fi/menus?lang=fi&restaurants=&days=${dateAsString}").mkString
+          val json = getJson(dateAsString)
           val tTalo = tTalonRuokalista(json)
           val täffä = täffänRuokalista(json)
           val alvari = alvarinRuokalista(json)
@@ -237,6 +219,48 @@ object YourBot extends App:
 
         //tapahtumankuuntelija ruokalistoille
         this.onUserCommandWithArguments("ruokalista", ruokalista)
+
+        //täffän ruokalistan haku
+        this.onUserCommandWithArguments("täffä", täffä)
+        def täffä(date: Seq[String]): String =
+          val dateAsString = date.mkString
+          val json = getJson(dateAsString)
+          täffänRuokalista(json)
+
+        //A blocin ruokalistan haku
+        this.onUserCommandWithArguments("abloc", abloc)
+        def abloc(date: Seq[String]): String =
+          val dateAsString = date.mkString
+          val json = getJson(dateAsString)
+          aBlocinRuokalista(json)
+
+        //dipolin ruokalistan haku
+        this.onUserCommandWithArguments("dipoli", dipoli)
+        def dipoli(date: Seq[String]): String =
+          val dateAsString = date.mkString
+          val json = getJson(dateAsString)
+          dipolinRuokalista(json)
+
+        //tuasin ruokalistan haku
+        this.onUserCommandWithArguments("tuas", tuas)
+        def tuas(date: Seq[String]): String =
+          val dateAsString = date.mkString
+          val json = getJson(dateAsString)
+          tuasinRuokalista(json)
+
+        //alvarin ruokalistan haku
+        this.onUserCommandWithArguments("alvari", alvari)
+        def alvari(date: Seq[String]): String =
+          val dateAsString = date.mkString
+          val json = getJson(dateAsString)
+          alvarinRuokalista(json)
+
+        //t-talonruokalistan haku
+        this.onUserCommandWithArguments("tietotalo", tietotalo)
+        def tietotalo(date: Seq[String]): String =
+          val dateAsString = date.mkString
+          val json = getJson(dateAsString)
+          tTalonRuokalista(json)
 
         this.run()
         // Tarkistetaan, että lähti käyntiin
