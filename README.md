@@ -1,27 +1,3 @@
-
-# Scala Library with simple and easy-to-read telegram bot methods for Aalto Students
-
-## Running and testing.
-
-*It is adviced to first test one bot before starting with the exercises*
-
-to run (insert these in terminal):
-
-> 1. sbt shell
-> 
-> 2. run
-> 
-> 3. choose the bot number
-
-## Suunnitelma.
-
-Kirjoittakaa tähän suunnitelmanne botin toiminnalle.
-
-
-Lähettää stickereitä riippuen siitä, mitä käyttäjä on kirjoittanut/tehnyt
-
-Hakee kanttiinit.fi sivulta ruokalistan jollakin komennolla
-
-Käyttäjä voi valita lempiravintolan, joka korostetaan ruokalistatulosteessa
-
-Toteutetaan help-komento, joka kertoo botin kaiken toiminnallisuuden
+A telegram bot that originally started as a school project.
+The bot has several commands in which you can find out and print the menus in kanttiinit.fi
+Not completely finished yet.

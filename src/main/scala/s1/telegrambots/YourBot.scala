@@ -1,5 +1,4 @@
 package s1.telegrambots
-import s1.telegrambots.BasicBot
 import scala.io.Source.fromURL
 
 
